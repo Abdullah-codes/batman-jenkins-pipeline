@@ -13,6 +13,10 @@ pipeline {
             steps { buildApp() }
 		}
 
+		stage("Test-pylint") {
+	    	 steps { testPylint('pylint') }
+		}
+
 		stage("Test") {
 	    	 steps { testApp('test') }
 		}
@@ -32,6 +36,24 @@ def buildApp() {
 	}
 }
 
+
+def testPylint(environment) {
+
+	def containerName = ''
+	
+
+	if ("${environment}" == 'pylint') {
+		containerName = "app_test_pylint"
+		
+	} 
+	else {
+		println "Environment not valid"
+		System.exit(0)
+	}
+
+	sh "docker run  --rm --name ${containerName} batman-app-image:${BUILD_NUMBER} pylint app.py"
+
+}
 
 def testApp(environment) {
 
