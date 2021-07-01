@@ -28,7 +28,7 @@ pipeline {
 // steps
 def buildApp() {
 	dir ('.' ) {
-		def appImage = docker.build("python-app-image:${BUILD_NUMBER}")
+		def appImage = docker.build("batman-app-image:${BUILD_NUMBER}")
 	}
 }
 
@@ -49,7 +49,7 @@ def testApp(environment) {
 
 	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
-	sh "docker run  -d -p ${port}:5000 --name ${containerName} python-app-image:${BUILD_NUMBER} pytest"
+	sh "docker run  -d -p ${port}:5000 --name ${containerName} batman-app-image:${BUILD_NUMBER} pytest"
 
 }
 
@@ -70,6 +70,6 @@ def deploy(environment) {
 
 	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
-	sh "docker run -d -p ${port}:5000 --name ${containerName} python-app-image:${BUILD_NUMBER}"
+	sh "docker run -d -p ${port}:5000 --name ${containerName} batman-app-image:${BUILD_NUMBER}"
 
 }
