@@ -45,7 +45,7 @@ def new():
             flash('Record was successfully added')
             return redirect(url_for('show_all'))
     return render_template('new.html')
-
+#adding comment for pull req
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True,host='0.0.0.0')
