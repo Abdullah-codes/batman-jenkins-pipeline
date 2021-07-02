@@ -47,6 +47,8 @@ def new():
     return render_template('new.html')
 #adding comment for pull req
 #adding comment for pull req 2
+
+#addinf p
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True,host='0.0.0.0')
