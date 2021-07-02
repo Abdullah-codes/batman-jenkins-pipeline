@@ -46,6 +46,7 @@ def new():
             return redirect(url_for('show_all'))
     return render_template('new.html')
 #adding comment for pull req
+#addinf p
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True,host='0.0.0.0')
