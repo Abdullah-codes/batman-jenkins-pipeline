@@ -6,7 +6,18 @@ pipeline {
     options {
         disableConcurrentBuilds()
     }
-
+    
+	job('upstreamJob') {
+		scm {
+			git {
+				remote {
+					github('https://github.com/Abdullah-codes/batman-jenkins-pipeline')
+					refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+				}
+				branch('${sha1}')
+			}
+    }
+	
     stages {
 
         stage("Build") {
