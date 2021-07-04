@@ -15,16 +15,16 @@ pipeline {
             steps { buildApp() }
 		}
 
-        // stage('para'){
-        //     parallel{
-        //         stage("Test-pylint") {
-	    // 	        steps { testPylint('pylint') }
-		//         }
-        //         stage("Test") {
-	    // 	        steps { testApp('test') }
-		//         }
-        //     }
-        // }
+        stage('para'){
+            parallel{
+                stage("Test-pylint") {
+	    	        steps { testPylint('pylint') }
+		        }
+                stage("Test") {
+	    	        steps { testApp('test') }
+		        }
+            }
+        }
 
         // stage("Deploy - Dev") {
         //     steps { deploy('dev') }
@@ -33,37 +33,10 @@ pipeline {
 			when {
 				branch 'main'
 			}
-			parallel{
-                stage("Test-pylint") {
-	    	        steps { testPylint('pylint') }
-		        }
-                stage("Test") {
-	    	        steps { testApp('test') }
-		        }
-            }
 			steps { deploy('dev') }
 			
 		}
-		stage('non-master-branch-stuff'){
-			when {
-				not{
-					anyOf {
-						branch 'main';
-            			branch 'staging'
-					}
-				}
-			}
-			steps{
-				parallel{
-                	stage("Test-pylint") {
-	    	        	steps { testPylint('pylint') }
-		        	}
-                	stage("Test") {
-	    	        	steps { testApp('test') }
-		        	}
-            	}
-			}
-		}
+		
 	}
 }
 
