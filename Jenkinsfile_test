@@ -8,15 +8,32 @@ pipeline {
     }
     
 	
-	
+
     stages {
 
         stage("Build") {
             steps { buildApp() }
 		}
 
-        stage('para'){
-            parallel{
+        // stage('para'){
+        //     parallel{
+        //         stage("Test-pylint") {
+	    // 	        steps { testPylint('pylint') }
+		//         }
+        //         stage("Test") {
+	    // 	        steps { testApp('test') }
+		//         }
+        //     }
+        // }
+
+        // stage("Deploy - Dev") {
+        //     steps { deploy('dev') }
+		// }
+        stage('master-branch-stuff'){
+			when {
+				branch 'main'
+			}
+			parallel{
                 stage("Test-pylint") {
 	    	        steps { testPylint('pylint') }
 		        }
@@ -24,12 +41,29 @@ pipeline {
 	    	        steps { testApp('test') }
 		        }
             }
-        }
-
-        stage("Deploy - Dev") {
-            steps { deploy('dev') }
+			steps { deploy('dev') }
+			
 		}
-
+		stage('non-master-branch-stuff'){
+			when {
+				not{
+					anyOf {
+						branch 'main';
+            			branch 'staging'
+					}
+				}
+			}
+			steps{
+				parallel{
+                	stage("Test-pylint") {
+	    	        	steps { testPylint('pylint') }
+		        	}
+                	stage("Test") {
+	    	        	steps { testApp('test') }
+		        	}
+            	}
+			}
+		}
 	}
 }
 
