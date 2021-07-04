@@ -46,6 +46,7 @@ def buildApp() {
 	dir ('.' ) {
 		def appImage = docker.build("batman-app-image:${BUILD_NUMBER}")
 	}
+	sh "env"
 }
 
 
@@ -105,3 +106,5 @@ def deploy(environment) {
 	sh "docker run -d -p ${port}:5000 --name ${containerName} batman-app-image:${BUILD_NUMBER}"
 
 }
+
+
