@@ -31,7 +31,7 @@ pipeline {
 		// }
         stage('master-branch-stuff'){
 			when {
-				branch 'main'
+				expression {env.GIT_BRANCH == 'origin/main'}
 			}
 			steps { deploy('dev') }
 			
