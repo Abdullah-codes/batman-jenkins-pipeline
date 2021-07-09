@@ -64,7 +64,8 @@ def testPylint(environment) {
 		System.exit(0)
 	}
 
-	sh "docker run  --rm --name ${containerName} batman-app-image:${BUILD_NUMBER} pylint app.py"
+	sh "docker run  --rm --name ${containerName} batman-app-image:${BUILD_NUMBER} pylint app.py | tee output.txt"
+	sh"cat output.txt"
 
 }
 
